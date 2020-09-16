@@ -6,8 +6,9 @@ var selected = {};
 export class ViewTable {
 
   constructor(){
-    this.connectedRange = [];
-    this.labelData = {};
+    this.conf = {};
+    this.conf.connectedRange = [];
+    this.conf.labelData = {};
   }
 
   load() {
@@ -21,23 +22,24 @@ export class ViewTable {
     if (cc === NaN || cc < 2) {
       cc = 3;
     }
-    this.countRow = cr;
-    this.countColumn = cc;
+    this.conf.countRow = cr;
+    this.conf.countColumn = cc;
     this.cells = [];
+    this.conf.pageWidth = $('#id_page_width').val();
   }
 
   addConnectedRange(){
-    this.connectedRange.push(
+    this.conf.connectedRange.push(
       this.selected
     )
     this.selected = {};
   }
 
   removeConnectedRange(){
-    for(let i = 0;i<this.connectedRange.length;i++){
-      if(this.selected.sR === this.connectedRange[i].sR 
-        && this.selected.sC === this.connectedRange[i].sC){
-          this.connectedRange.splice(i, 1);
+    for(let i = 0;i<this.conf.connectedRange.length;i++){
+      if(this.selected.sR === this.conf.connectedRange[i].sR 
+        && this.selected.sC === this.conf.connectedRange[i].sC){
+          this.conf.connectedRange.splice(i, 1);
           break;
         }
     }
@@ -55,20 +57,20 @@ export class ViewTable {
     const key = this.selectedKey();
     if(key){
       const inputTxt = $('#id_label_txt').val();
-      this.labelData[key] = inputTxt;
+      this.conf.labelData[key] = inputTxt;
     }
   }
 
   getLabel(r,c){
     const key = String(r) + '_' + String(c);
-    if(this.labelData[key]!==undefined || this.labelData[key]!==null){
-      return this.labelData[key];
+    if(this.conf.labelData[key]!==undefined || this.conf.labelData[key]!==null){
+      return this.conf.labelData[key];
     }
     return '';
   }
 
   connected() {
-    return this.connectedRange;
+    return this.conf.connectedRange;
   }
 
   render() {
@@ -80,27 +82,33 @@ export class ViewTable {
     const fo_root = $('<root>');
     const fo_table = $('<fo:table>');
     fo_root.append(fo_table);
-    for(let i=0;i<this.countColumn;i++){
+    const cWidth = this.conf.pageWidth / this.conf.countColumn;
+    for(let i=0;i<this.conf.countColumn;i++){
       const fo_table_column = $('<fo:table-column>')
       fo_table_column.attr('column-number', i+1);
+      fo_table_column.attr('column-width', String(cWidth) + 'mm');
       fo_table.append(fo_table_column);
     }
     const fo_tbody = $('<fo:table-body>');
     fo_table.append(fo_tbody);
 
     const cons = this.connected();
-    for (let i = 0; i < this.countRow; i++) {
+    for (let i = 0; i < this.conf.countRow; i++) {
       const row = $('<tr>');
       row.attr('r', i);
       tbody.append(row);
       const fo_row = $('<fo:table-row>');
       fo_tbody.append(fo_row);
 
-      for (let j = 0; j < this.countColumn; j++) {
+      for (let j = 0; j < this.conf.countColumn; j++) {
         const label = this.getLabel(i,j);
         const cell = $('<td>');
         cell.text(label);
         const fo_cell = $('<fo:table-cell>');
+        fo_cell.attr('xsl:use-attribute-sets', 'myTableCellStyle');
+        const fo_cell_comment = $('<xsl:comment>');
+        fo_cell_comment.text('Row:'+i+', Column:'+j);
+        fo_cell.append(fo_cell_comment);
         const fo_cell_block = $('<fo:block>');
         fo_cell_block.text(label);
         fo_cell.append(fo_cell_block);
@@ -199,6 +207,17 @@ export class ViewTable {
     $("#id_canvas").empty();
     $("#id_canvas").append(table)
     $('#id_fo_contents').val(format(fo_root.html()));
+    this.setConf();
+  }
+
+  setConf(){
+
+    $('#id_conf').val(JSON.stringify(this.conf));
+    
+  }
+
+  loadConf(){
+    this.conf = JSON.parse($('#id_conf').val());
   }
 }
 

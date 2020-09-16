@@ -5,16 +5,28 @@
     
   </head>
   <body>
+    ページ幅：<input type="number" id="id_page_width" value="190"> mm <br>
     行：<input class="input_count" type="number" id="id_count_row" value="10"> × 列: <input class="input_count" type="number" id="id_count_column" value="10">
     <button id="id_connect" >結合</button>
     <button id="id_disconnect" >分離</button>
     <input id="id_label_txt"></input>
     <button id="id_set_label" >ラベル設定</button>
     <div id="id_canvas"></div>
-    <div>
-      <button id="id_copy_fop_button">Copy</button>
+    <div class="textarea_block">
+      <div class="horizontal_area">
+        <div>
+          <button id="id_copy_fop_button">Copy</button>
+        </div>
+        <textarea id="id_fo_contents" class="copy_area"></textarea>
+      </div>
+      <div class="horizontal_area">
+        <div>
+          <button id="id_copy_conf_button">Copy</button>
+          <button id="id_load_conf_button">Load from config</button>
+        </div>
+        <textarea id="id_conf" class="copy_area"></textarea>
+      </div>
     </div>
-    <textarea id="id_fo_contents"></textarea>
     <script src="dist/bundle.js"></script>
   </body>
 </html>

@@ -31,4 +31,15 @@ $(function(){
     document.execCommand("copy");
     alert('コピーしました');
   });
+
+  $('#id_copy_conf_button').on('click', ()=>{
+    $('#id_conf').select();
+    document.execCommand("copy");
+    alert('コピーしました');
+  });
+
+  $('#id_load_conf_button').on('click',()=>{
+    vt.loadConf();
+    vt.render();
+  })
 })
