@@ -14,6 +14,7 @@ export class ViewTable {
   load() {
     const countRow = $('#id_count_row').val();
     const countColumn = $('#id_count_column').val();
+    const pageWidth = $('#id_page_width').val();
     let cr = parseInt(countRow);
     let cc = parseInt(countColumn);
     if (cr === NaN || cr < 2) {
@@ -25,7 +26,7 @@ export class ViewTable {
     this.conf.countRow = cr;
     this.conf.countColumn = cc;
     this.cells = [];
-    this.conf.pageWidth = $('#id_page_width').val();
+    this.conf.pageWidth = pageWidth;
   }
 
   addConnectedRange(){
@@ -217,7 +218,12 @@ export class ViewTable {
   }
 
   loadConf(){
-    this.conf = JSON.parse($('#id_conf').val());
+    const conf = JSON.parse($('#id_conf').val());
+    $('#id_count_column').val(conf.countColumn);
+    $('#id_count_row').val(conf.countRow);
+    $('#id_page_width').val(conf.pageWidth);
+    
+    this.conf = conf;
   }
 }
 
