@@ -207,14 +207,10 @@ export class ViewTable {
     }
     $("#id_canvas").empty();
     $("#id_canvas").append(table)
+
+    const confStr = JSON.stringify(this.conf);
     $('#id_fo_contents').val(format(fo_root.html()));
-    this.setConf();
-  }
-
-  setConf(){
-
-    $('#id_conf').val(JSON.stringify(this.conf));
-    
+    $('#id_conf').val(confStr);
   }
 
   loadConf(){
