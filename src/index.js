@@ -21,6 +21,11 @@ $(function(){
     vt.render();
   });
 
+  $('#id_set_label').on('click',()=>{
+    vt.setLabel();
+    vt.render();
+  })
+
   $('#id_copy_fop_button').on('click', ()=>{
     $('#id_fo_contents').select();
     document.execCommand("copy");

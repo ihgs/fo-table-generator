@@ -7,6 +7,7 @@ export class ViewTable {
 
   constructor(){
     this.connectedRange = [];
+    this.labelData = {};
   }
 
   load() {
@@ -29,6 +30,7 @@ export class ViewTable {
     this.connectedRange.push(
       this.selected
     )
+    this.selected = {};
   }
 
   removeConnectedRange(){
@@ -39,6 +41,30 @@ export class ViewTable {
           break;
         }
     }
+    this.selected ={};
+  }
+
+  selectedKey (){
+    if(this.selected.sR !== undefined){
+      return String(this.selected.sR) + '_' + String(this.selected.sC); 
+    }
+    return null;
+  }
+
+  setLabel(){
+    const key = this.selectedKey();
+    if(key){
+      const inputTxt = $('#id_label_txt').val();
+      this.labelData[key] = inputTxt;
+    }
+  }
+
+  getLabel(r,c){
+    const key = String(r) + '_' + String(c);
+    if(this.labelData[key]!==undefined || this.labelData[key]!==null){
+      return this.labelData[key];
+    }
+    return '';
   }
 
   connected() {
@@ -71,9 +97,12 @@ export class ViewTable {
       fo_tbody.append(fo_row);
 
       for (let j = 0; j < this.countColumn; j++) {
+        const label = this.getLabel(i,j);
         const cell = $('<td>');
+        cell.text(label);
         const fo_cell = $('<fo:table-cell>');
-        const fo_cell_block = $('<fo:block></fo:block>');
+        const fo_cell_block = $('<fo:block>');
+        fo_cell_block.text(label);
         fo_cell.append(fo_cell_block);
         cell.attr('r', i);
         cell.attr('c', j);
