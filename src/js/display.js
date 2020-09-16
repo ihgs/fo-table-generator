@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import format from 'xml-formatter';
 
 var onSelect =false;
 var selected = {};
@@ -50,14 +51,30 @@ export class ViewTable {
     const table = $('<table>');
     const tbody = $('<tbody>');
     table.append(tbody);
+    const fo_root = $('<root>');
+    const fo_table = $('<fo:table>');
+    fo_root.append(fo_table);
+    for(let i=0;i<this.countColumn;i++){
+      const fo_table_column = $('<fo:table-column>')
+      fo_table_column.attr('column-number', i+1);
+      fo_table.append(fo_table_column);
+    }
+    const fo_tbody = $('<fo:table-body>');
+    fo_table.append(fo_tbody);
+
     const cons = this.connected();
     for (let i = 0; i < this.countRow; i++) {
       const row = $('<tr>');
       row.attr('r', i);
       tbody.append(row);
+      const fo_row = $('<fo:table-row>');
+      fo_tbody.append(fo_row);
 
       for (let j = 0; j < this.countColumn; j++) {
         const cell = $('<td>');
+        const fo_cell = $('<fo:table-cell>');
+        const fo_cell_block = $('<fo:block></fo:block>');
+        fo_cell.append(fo_cell_block);
         cell.attr('r', i);
         cell.attr('c', j);
 
@@ -69,6 +86,8 @@ export class ViewTable {
             const diffC = con.eC - con.sC;
             cell.attr('rowSpan', diffR + 1);
             cell.attr('colSpan', diffC + 1);
+            fo_cell.attr('number-rows-spanned', diffR+1);
+            fo_cell.attr('number-columns-spanned', diffC+1);
             isConnected = true;
           } else if (con.sR <= i && i <= con.eR && con.sC <= j && j <= con.eC) {
             skip = true;
@@ -77,6 +96,7 @@ export class ViewTable {
         })
         if (!skip) {
           row.append(cell);
+          fo_row.append(fo_cell);
           this.cells.push(cell);
           cell.on('click', ()=>{
             if(onSelect){
@@ -149,6 +169,7 @@ export class ViewTable {
     }
     $("#id_canvas").empty();
     $("#id_canvas").append(table)
+    $('#id_fo_contents').val(format(fo_root.html()));
   }
 }
 
