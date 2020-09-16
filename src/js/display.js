@@ -24,9 +24,9 @@ export class ViewTable {
     this.cells = [];
   }
 
-  addConnectedRange(sR, sC, eR, eC){
+  addConnectedRange(){
     this.connectedRange.push(
-      {sR, sC, eR, eC}
+      this.selected
     )
   }
 
@@ -82,6 +82,20 @@ export class ViewTable {
               }else {
                 selected['eC'] = j;
               }
+              this.cells.forEach(target=>{
+                const _r = target.attr('r');
+                const _c = target.attr('c');
+                  
+                if(selected.sC<=_c && _c <=selected.eC
+                  && selected.sR <= _r && _r <=selected.eR){
+                  
+                  target.removeClass('onSelect');
+                  target.addClass('selected');
+                } else {
+                  target.removeClass('selected');
+                }
+              })
+              
               onSelect = false;
             }else {
               onSelect = true;
@@ -89,8 +103,13 @@ export class ViewTable {
                 sR:i,
                 sC:j
               };
+              this.cells.forEach(target=>{
+                target.removeClass('selected');
+              })
+              cell.addClass('onSelect');
+
             }
-            console.log(selected)
+            this.selected = selected;
           });
           cell.on('mouseover', ()=>{
             if(onSelect){
@@ -104,10 +123,9 @@ export class ViewTable {
                 const _r = target.attr('r');
                 const _c = target.attr('c');
                 if(minR<=_r && _r<=maxR && minC<= _c && _c <= maxC){
-                  target.addClass('selected');
-
+                  target.addClass('onSelect');
                 }else{
-                  target.removeClass('selected');
+                  target.removeClass('onSelect');
                 }
               })
             }

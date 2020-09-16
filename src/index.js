@@ -12,4 +12,8 @@ $(function(){
   $('#id_count_column').on('change',()=>{
     vt.render();
   });
+  $('#id_connect').on('click', ()=>{
+    vt.addConnectedRange();
+    vt.render();
+  });
 })
