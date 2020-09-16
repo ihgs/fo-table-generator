@@ -16,4 +16,8 @@ $(function(){
     vt.addConnectedRange();
     vt.render();
   });
+  $('#id_disconnect').on('click', ()=>{
+    vt.removeConnectedRange();
+    vt.render();
+  });
 })

@@ -30,6 +30,16 @@ export class ViewTable {
     )
   }
 
+  removeConnectedRange(){
+    for(let i = 0;i<this.connectedRange.length;i++){
+      if(this.selected.sR === this.connectedRange[i].sR 
+        && this.selected.sC === this.connectedRange[i].sC){
+          this.connectedRange.splice(i, 1);
+          break;
+        }
+    }
+  }
+
   connected() {
     return this.connectedRange;
   }
