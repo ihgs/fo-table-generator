@@ -84,6 +84,7 @@ export class ViewTable {
     const fo_table = $('<fo:table>');
     fo_root.append(fo_table);
     const cWidth = this.conf.pageWidth / this.conf.countColumn;
+    const cHeight = cWidth;
     for(let i=0;i<this.conf.countColumn;i++){
       const fo_table_column = $('<fo:table-column>')
       fo_table_column.attr('column-number', i+1);
@@ -110,9 +111,12 @@ export class ViewTable {
         const fo_cell_comment = $('<xsl:comment>');
         fo_cell_comment.text('Row:'+i+', Column:'+j);
         fo_cell.append(fo_cell_comment);
+        const fo_cell_block_container = $('<fo:block-container>');
+        fo_cell_block_container.attr('height', String(cHeight) + 'mm');
+        fo_cell.append(fo_cell_block_container);
         const fo_cell_block = $('<fo:block>');
         fo_cell_block.text(label);
-        fo_cell.append(fo_cell_block);
+        fo_cell_block_container.append(fo_cell_block);
         cell.attr('r', i);
         cell.attr('c', j);
 
@@ -126,6 +130,7 @@ export class ViewTable {
             cell.attr('colSpan', diffC + 1);
             fo_cell.attr('number-rows-spanned', diffR+1);
             fo_cell.attr('number-columns-spanned', diffC+1);
+            fo_cell_block.attr('min-height', String((diffR+1)*cHeight)+'mm');
             isConnected = true;
           } else if (con.sR <= i && i <= con.eR && con.sC <= j && j <= con.eC) {
             skip = true;
