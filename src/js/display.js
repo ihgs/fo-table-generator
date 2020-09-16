@@ -1,6 +1,12 @@
 import $ from 'jquery';
 
+var onSelect =false;
+var selected = {};
 export class ViewTable {
+
+  constructor(){
+    this.connectedRange = [];
+  }
 
   load() {
     const countRow = $('#id_count_row').val();
@@ -15,16 +21,19 @@ export class ViewTable {
     }
     this.countRow = cr;
     this.countColumn = cc;
+    this.cells = [];
+  }
+
+  addConnectedRange(sR, sC, eR, eC){
+    this.connectedRange.push(
+      {sR, sC, eR, eC}
+    )
   }
 
   connected() {
-    return [
-      {
-        sR: 0, sC: 0,
-        eR: 1, eC: 0
-      }
-    ]
+    return this.connectedRange;
   }
+
   render() {
     this.load();
 
@@ -58,6 +67,52 @@ export class ViewTable {
         })
         if (!skip) {
           row.append(cell);
+          this.cells.push(cell);
+          cell.on('click', ()=>{
+            if(onSelect){
+              if(i<selected['sR']){
+                selected['eR'] = selected['sR'];
+                selected['sR'] = i;
+              }else {
+                selected['eR'] = i;
+              }
+              if(j<selected['sC']){
+                selected['eC'] = selected['sC'];
+                selected['sC'] = j;
+              }else {
+                selected['eC'] = j;
+              }
+              onSelect = false;
+            }else {
+              onSelect = true;
+              selected = {
+                sR:i,
+                sC:j
+              };
+            }
+            console.log(selected)
+          });
+          cell.on('mouseover', ()=>{
+            if(onSelect){
+              const myR = cell.attr('r');
+              const myC = cell.attr('c');
+              const minR = Math.min(myR, selected.sR);
+              const minC = Math.min(myC, selected.sC);
+              const maxR = Math.max(myR, selected.sR);
+              const maxC = Math.max(myC, selected.sC);
+              this.cells.forEach(target=>{
+                const _r = target.attr('r');
+                const _c = target.attr('c');
+                if(minR<=_r && _r<=maxR && minC<= _c && _c <= maxC){
+                  target.addClass('selected');
+
+                }else{
+                  target.removeClass('selected');
+                }
+              })
+            }
+          });
+          
         }
         if (isConnected) {
           cell.attr('connected', 1)
