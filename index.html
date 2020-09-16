@@ -11,6 +11,7 @@
     <button id="id_disconnect" >分離</button>
     <input id="id_label_txt"></input>
     <button id="id_set_label" >ラベル設定</button>
+    <div><a href="#usage">使いかた</a></div>
     <div id="id_canvas"></div>
     <div class="textarea_block">
       <div class="horizontal_area">
@@ -28,5 +29,28 @@
       </div>
     </div>
     <script src="dist/bundle.js"></script>
+    <h3 id="usage">使い方</h3>
+    <ul>
+      <li>セルをクリックすると、クリックしたセルとカーソルの位置のセルが選択モードになります（薄いピンク）。</li>
+      <li>選択モードでセルをクリックすると選択確定モードになります（濃いピンク）。</li>
+      <li>選択確定モードで結合ボタンをクリックすると、選択確定モードのセルが結合されます。</li>
+      <li>選択確定モードで分離ボタンをクリックすると、左上のセルが結合されている場合、結合が解除されます。</li>
+      <li>表の状況に合わせた、fo-tableが作成されるため、Copyして利用してください。以下のようなattributeを設定するひつようがあります。
+        myTableCellStyle
+      <pre>
+      &lt;xsl:attribute-set name=&quot;myTableCellStyle&quot; &gt;
+        &lt;xsl:attribute name=&quot;font-size&quot;&gt;7pt&lt;/xsl:attribute&gt;
+        &lt;xsl:attribute name=&quot;border&quot;&gt;1pt solid black&lt;/xsl:attribute&gt;
+        &lt;xsl:attribute name=&quot;text-align&quot;&gt;left&lt;/xsl:attribute&gt;
+      &lt;/xsl:attribute-set&gt;
+      </pre>
+      
+      </li>
+    </ul>
+    <h3 id="usage">利用上の注意</h3>
+    <ul>
+      <li>予告なく仕様が変更する場合があります。</li>
+      <li>バグ・要望は<a href="https://github.com/ihgs/fo-table-generator/issues" target="_blank">こちら</a></li>
+    </ul>
   </body>
 </html>
