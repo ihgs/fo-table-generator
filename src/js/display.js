@@ -9,6 +9,7 @@ export class ViewTable {
     this.conf = {};
     this.conf.connectedRange = [];
     this.conf.labelData = {};
+    this.conf.borderStyle = {};
   }
 
   load() {
@@ -70,6 +71,27 @@ export class ViewTable {
     return '';
   }
 
+  setBorder(style){
+    if(this.selected.sR !== undefined){
+      for(let i=this.selected.sR;i<this.selected.eR+1;i++){
+        for(let j=this.selected.sC;j<this.selected.eC+1;j++){
+          const key = String(i) + '_' + String(j);
+          if(key){
+            this.conf.borderStyle[key] = style;
+           }
+        }
+      }
+    }    
+  }
+
+  getBorder(r,c){
+    const key = String(r) + '_' + String(c);
+    if(this.conf.borderStyle[key]!==undefined || this.conf.borderStyle[key]!==null){
+      return this.conf.borderStyle[key];
+    }
+    return null;
+  }
+
   connected() {
     return this.conf.connectedRange;
   }
@@ -107,15 +129,19 @@ export class ViewTable {
         const cell = $('<td>');
         cell.text(label);
         const fo_cell = $('<fo:table-cell>');
-        fo_cell.attr('xsl:use-attribute-sets', 'myTableCellStyle');
-        const fo_cell_comment = $('<xsl:comment>');
-        fo_cell_comment.text('Row:'+i+', Column:'+j);
+        const fo_cell_comment = document.createComment('Row:'+i+', Column:'+j);
         fo_cell.append(fo_cell_comment);
         const fo_cell_block_container = $('<fo:block-container>');
         fo_cell_block_container.attr('height', String(cHeight) + 'mm');
         fo_cell.append(fo_cell_block_container);
         const fo_cell_block = $('<fo:block>');
         fo_cell_block.text(label);
+
+        const borderStyle = this.getBorder(i, j);
+        if(borderStyle){
+          cell.addClass(borderStyle);
+          fo_cell.attr('xsl:use-attribute-sets', 'myCell-'+borderStyle);
+        }
         fo_cell_block_container.append(fo_cell_block);
         cell.attr('r', i);
         cell.attr('c', j);
@@ -214,6 +240,7 @@ export class ViewTable {
     $("#id_canvas").append(table)
 
     const confStr = JSON.stringify(this.conf);
+    
     $('#id_fo_contents').val(format(fo_root.html()));
     $('#id_conf').val(confStr);
   }

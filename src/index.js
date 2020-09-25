@@ -42,4 +42,16 @@ $(function(){
     vt.loadConf();
     vt.render();
   })
+
+  $('#id_border').on('click',()=>{
+    vt.setBorder('normalBorder');
+    vt.render();
+  })
+
+  $('#id_thick_border').on('click',()=>{
+    vt.setBorder('thickBorder');
+    vt.render();
+  })
+
+  
 })

@@ -7,7 +7,7 @@
   "scripts": {
     "build": "webpack --mode development --config webpack.config.js --watch",
     "build:prod": "webpack --mode production --config webpack.config.js",
-    "pages": "npm run build:prod && mkdir -p build/dist && cp index.html build && cp dist/bundle.js build/dist && push-dir --dir=build --branch=gh-pages"
+    "pages": "npm run build:prod && mkdir -p build/dist && cp index.html format.xsl build && cp dist/bundle.js build/dist && push-dir --dir=build --branch=gh-pages"
   },
   "name": "fo-table-generator",
   "version": "0.1.0",
