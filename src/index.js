@@ -53,5 +53,9 @@ $(function(){
     vt.render();
   })
 
+  $('#id_clear_border').on('click',()=>{
+    vt.clearBorder();
+    vt.render();
+  })
   
 })

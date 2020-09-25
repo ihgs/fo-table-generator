@@ -84,6 +84,19 @@ export class ViewTable {
     }    
   }
 
+  clearBorder(){
+    if(this.selected.sR !== undefined){
+      for(let i=this.selected.sR;i<this.selected.eR+1;i++){
+        for(let j=this.selected.sC;j<this.selected.eC+1;j++){
+          const key = String(i) + '_' + String(j);
+          if(key){
+            delete this.conf.borderStyle[key];
+           }
+        }
+      }
+    } 
+  }
+
   getBorder(r,c){
     const key = String(r) + '_' + String(c);
     if(this.conf.borderStyle[key]!==undefined || this.conf.borderStyle[key]!==null){
