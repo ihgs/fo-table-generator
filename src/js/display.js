@@ -30,11 +30,44 @@ export class ViewTable {
     this.conf.pageWidth = pageWidth;
   }
 
+  /**
+   * 結合する場合、以下をチェック
+   *  ・一行全てが選択されないか
+   *  ・選択範囲内に、すでに結合済みのものがないか
+   *   
+   */
+  _checkSelectedRange() {
+    if(this.selected.sC === 0 && this.selected.eC === this.conf.countColumn -1){
+      alert('一行全てを結合できません。');
+      return false;
+    }
+    let flag = true;
+    this.conf.connectedRange.forEach(range=>{
+
+      if( (this.selected.eC < range.sC  || range.eC < this.selected.sC ) 
+        || (this.selected.eR < range.sR  || range.eR < this.selected.sR ) ){
+          
+      } else {
+        flag = false;
+      }
+    });
+    if(!flag){
+      alert('結合済みのセルの再結合はできません。');
+      return false;
+    }
+    return true;
+  }
+
   addConnectedRange(){
+    if(!this._checkSelectedRange()){
+      this.selected = {};
+      return false;
+    }
     this.conf.connectedRange.push(
       this.selected
     )
     this.selected = {};
+    return true;
   }
 
   removeConnectedRange(){
@@ -48,6 +81,9 @@ export class ViewTable {
     this.selected ={};
   }
 
+  /**
+   * 選択範囲の左上のキーを返却する
+   */
   selectedKey (){
     if(this.selected.sR !== undefined){
       return String(this.selected.sR) + '_' + String(this.selected.sC); 
