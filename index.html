@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    
+  </head>
+  <body>
+    ページ幅：<input type="number" id="id_page_width" value="190"> mm <br>
+    行：<input class="input_count" type="number" id="id_count_row" value="26"> × 列: <input class="input_count" type="number" id="id_count_column" value="19">
+    <button id="id_connect" >結合</button>
+    <button id="id_disconnect" >分離</button>
+    <input id="id_label_txt"></input>
+    <button id="id_set_label" >ラベル設定</button>
+    <div>
+      <button id="id_border">枠線</button>
+      <button id="id_thick_border">太線</button>
+      <button id="id_clear_border">クリア</button>
+    </div>
+    <div><a href="#usage">使いかた</a></div>
+    <div id="id_canvas"></div>
+    <div class="textarea_block">
+      <div class="horizontal_area">
+        <div>
+          <button id="id_copy_fop_button">Copy</button>
+        </div>
+        <textarea id="id_fo_contents" class="copy_area"></textarea>
+      </div>
+      <div class="horizontal_area">
+        <div>
+          <button id="id_copy_conf_button">Copy</button>
+          <button id="id_load_conf_button">Load from config</button>
+        </div>
+        <textarea id="id_conf" class="copy_area"></textarea>
+      </div>
+    </div>
+    <script src="dist/bundle.js"></script>
+    <h3 id="usage">使い方</h3>
+    <ul>
+      <li>セルをクリックすると、クリックしたセルとカーソルの位置のセルが選択モードになります（薄いピンク）。</li>
+      <li>選択モードでセルをクリックすると選択確定モードになります（濃いピンク）。</li>
+      <li>選択確定モードで結合ボタンをクリックすると、選択確定モードのセルが結合されます。</li>
+      <li>選択確定モードで分離ボタンをクリックすると、左上のセルが結合されている場合、結合が解除されます。</li>
+      <li>表の状況に合わせた、fo-tableが作成されるため、Copyして利用してください。<a href="./format.xsl">format.xsl</a>にあるようなxsl:attribute-setが必要になります。
+      
+      </li>
+    </ul>
+    <h3 id="usage">利用上の注意</h3>
+    <ul>
+      <li>予告なく仕様が変更する場合があります。</li>
+      <li>バグ・要望は<a href="https://github.com/ihgs/fo-table-generator/issues" target="_blank">こちら</a></li>
+    </ul>
+  </body>
+</html>
